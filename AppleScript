@@ -8,7 +8,7 @@ global firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
 global iCloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, SyncSource, SyncDest, errmsg, errnbr
 global iCloudRsyncMode, firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
 global CloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, SyncSource, SyncDest, RT_Option, RT_Option_HDW, errmsg, errnbr
-global iCloud_To_User, rsyncPath, rsyncParameter, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
+global iCloud_To_User, rsyncPath, rsyncParameter, UserName, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
 global OpenScript, OpenAppScript, TerminalNotifier, errmsg, errnbr
 
 on run
@@ -130,7 +130,10 @@ script iCloud_To_User
 			
 			set rsyncParameter to (" -ESWPaudvxh80AX --delete --stats --exclude={.*,Library,Public,Desktop} ")
 			
-			set SyncSource to ("~/Library/'Mobile Documents'/com~apple~CloudDocs")
+			set UserName to do shell script "whoami"
+			set UserName to quoted form of UserName
+			
+			set SyncSource to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName)
 			set SyncDest to ("~")
 			
 			set TerminalNotifier to POSIX path of (path to me as text) ¬
