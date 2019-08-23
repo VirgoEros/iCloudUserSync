@@ -3,82 +3,90 @@
 --排除={緩存,公用,桌面} 
 
 ------------------------------∞ iCloudDriveUserSync ∞----------------------------------ON.  
-global iCloudRsyncMode, OpenScript, rsyncPath, rsyncParameter, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
+global iCloudMode, iCloudRsyncMode, OpenScript, iCloud_To_User, rsyncPath, rsyncParameter, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
 global firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
 global iCloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, SyncSource, SyncDest, errmsg, errnbr
 global iCloudRsyncMode, firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
 global CloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, SyncSource, SyncDest, RT_Option, RT_Option_HDW, errmsg, errnbr
+global iCloud_To_User, rsyncPath, rsyncParameter, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
 global OpenScript, OpenAppScript, TerminalNotifier, errmsg, errnbr
 
 on run
 	try
 		tell application "Finder"
-			set {button returned:iCloudRsyncMode} to ¬
+			set {button returned:iCloudMode} to ¬
 				display dialog {"請鰛鰇鱮美鱺沝療癒鯀女鰰選擇 iCloudDrive 鮦步選項 唷💋"} buttons ¬
-					{"iCloudDrive鱓次鮦步", "iCloudDrive實鰣鮦步", "開啟腳本"} with title ¬
+					{"使用者鮦步至iCloudDrive", "iCloudDrive鮦步至使用者", "開啟腳本"} with title ¬
 					{"iCloudDrive鮦步"}
-			if iCloudRsyncMode is "開啟腳本" then run script OpenScript
-			if iCloudRsyncMode is "iCloudDrive鱓次鮦步" then
-				
-				set rsyncPath to POSIX path of (path to me as text) & ("Contents/MacOS/rsync")
-				set rsyncPath to quoted form of rsyncPath
-				
-				set rsyncParameter to (" -ESWPaudvxh80AX --delete --stats --exclude={.*,Library,Public,Desktop} ")
-				
-				set SyncSource to ("~")
-				set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs")
-				
-				set TerminalNotifier to POSIX path of (path to me as text) ¬
-					& {"Contents/MacOS/terminal-notifier"}
-				set TerminalNotifier to quoted form of TerminalNotifier
-				
-				do shell script (TerminalNotifier & " -title iCloudDrive鮦步中唷💋")
-				do shell script {rsyncPath & rsyncParameter & SyncSource & " " & SyncDest}
-				delay 1
-				set isDone to false
-				set itemPath to ("rsync ")
-				set itemProgress to "ps ax | grep -v grep | grep " & itemPath
-				repeat while isDone is false
-					try
-						do shell script itemProgress
-						if the result contains itemPath then
-							delay 1
-						else
-							set isDone to true
-						end if
-					on error
-						set isDone to true
-					end try
-				end repeat
-				if isDone is true then
-					do shell script (TerminalNotifier & " -title iCloudDrive鮦步鯇成鰳唷💋")
-					do shell script ("open " & SyncDest)
-					continue quit
-				end if
-			end if
-			if iCloudRsyncMode is "iCloudDrive實鰣鮦步" then
-				set firstRun to true
-				set RT_Seconds to ("")
-				set {button returned:RT_Option} to ¬
-					display dialog {" 
-請鰛鰇鱮美鱺沝療癒鯀女鰰選擇 鮦步間隔鱓位 唷💋"} buttons ¬
-						{"秒", "魵", "鰣 日 週"} with title ¬
+			if iCloudMode is "開啟腳本" then run script OpenScript
+			if iCloudMode is "iCloudDrive鮦步至使用者" then run script iCloud_To_User
+			if iCloudMode is "使用者鮦步至iCloudDrive" then
+				set {button returned:iCloudRsyncMode} to ¬
+					display dialog {"請鰛鰇鱮美鱺沝療癒鯀女鰰選擇使用者鮦步至iCloudDrive選項 唷💋"} buttons ¬
+						{"使用者鮦步至iCloudDrive鱓次鮦步", "使用者鮦步至iCloudDrive實鰣鮦步"} with title ¬
 						{"iCloudDrive鮦步"}
 				
-				if RT_Option is "秒" then return RT_Seconds
-				if RT_Option is "魵" then return {RT_Seconds * minutes}
-				
-				if RT_Option is "鰣 日 週" then
-					set {button returned:RT_Option_HDW} to ¬
+				if iCloudRsyncMode is "使用者鮦步至iCloudDrive鱓次鮦步" then
+					
+					set rsyncPath to POSIX path of (path to me as text) & ("Contents/MacOS/rsync")
+					set rsyncPath to quoted form of rsyncPath
+					
+					set rsyncParameter to (" -ESWPaudvxh80AX --delete --stats --exclude={.*,Library,Public,Desktop} ")
+					
+					set SyncSource to ("~")
+					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs")
+					
+					set TerminalNotifier to POSIX path of (path to me as text) ¬
+						& {"Contents/MacOS/terminal-notifier"}
+					set TerminalNotifier to quoted form of TerminalNotifier
+					
+					do shell script {rsyncPath & rsyncParameter & SyncSource & " " & SyncDest}
+					delay 1
+					set isDone to false
+					set itemPath to ("rsync ")
+					set itemProgress to "ps ax | grep -v grep | grep " & itemPath
+					repeat while isDone is false
+						try
+							do shell script itemProgress
+							if the result contains itemPath then
+								delay 1
+							else
+								set isDone to true
+							end if
+						on error
+							set isDone to true
+						end try
+					end repeat
+					if isDone is true then
+						do shell script (TerminalNotifier & " -title iCloudDrive鮦步鯇成鰳唷💋")
+						do shell script ("open " & SyncDest)
+						continue quit
+					end if
+				end if
+				if iCloudRsyncMode is "使用者鮦步至iCloudDrive實鰣鮦步" then
+					set firstRun to true
+					set RT_Seconds to ("")
+					set {button returned:RT_Option} to ¬
 						display dialog {" 
 請鰛鰇鱮美鱺沝療癒鯀女鰰選擇 鮦步間隔鱓位 唷💋"} buttons ¬
-							{"鰣", "日", "週"} with title ¬
+							{"秒", "魵", "鰣 日 週"} with title ¬
 							{"iCloudDrive鮦步"}
 					
-					if RT_Option_HDW is "鰣" then return {RT_Seconds * hours}
-					if RT_Option_HDW is "日" then return {RT_Seconds * days}
-					if RT_Option_HDW is "週" then return {RT_Seconds * weeks}
+					if RT_Option is "秒" then return RT_Seconds
+					if RT_Option is "魵" then return {RT_Seconds * minutes}
 					
+					if RT_Option is "鰣 日 週" then
+						set {button returned:RT_Option_HDW} to ¬
+							display dialog {" 
+請鰛鰇鱮美鱺沝療癒鯀女鰰選擇 鮦步間隔鱓位 唷💋"} buttons ¬
+								{"鰣", "日", "週"} with title ¬
+								{"iCloudDrive鮦步"}
+						
+						if RT_Option_HDW is "鰣" then return {RT_Seconds * hours}
+						if RT_Option_HDW is "日" then return {RT_Seconds * days}
+						if RT_Option_HDW is "週" then return {RT_Seconds * weeks}
+						
+					end if
 				end if
 			end if
 		end tell
@@ -90,7 +98,7 @@ end run
 
 on idle
 	try
-		if iCloudRsyncMode is "iCloudDrive實鰣鮦步" then
+		if iCloudRsyncMode is "使用者鮦步至iCloudDrive實鰣鮦步" then
 			if firstRun then
 				tell application "Finder" to display dialog {"請沝女鰰鰎魞間隔數字，倘鰙鰡空鱂以最小間隔值鮦步唷💋"} default answer ("") with title ¬
 					{"iCloudDrive鮦步"}
@@ -113,6 +121,50 @@ on idle
 		if errnbr = -128 then continue quit
 	end try
 end idle
+------------------------------∞ iCloudDrive鮦步至使用者  ∞----------------------------------ON.  
+script iCloud_To_User
+	try
+		tell application "Finder"
+			set rsyncPath to POSIX path of (path to me as text) & ("Contents/MacOS/rsync")
+			set rsyncPath to quoted form of rsyncPath
+			
+			set rsyncParameter to (" -ESWPaudvxh80AX --delete --stats --exclude={.*,Library,Public,Desktop} ")
+			
+			set SyncSource to ("~/Library/'Mobile Documents'/com~apple~CloudDocs")
+			set SyncDest to ("~")
+			
+			set TerminalNotifier to POSIX path of (path to me as text) ¬
+				& {"Contents/MacOS/terminal-notifier"}
+			set TerminalNotifier to quoted form of TerminalNotifier
+			
+			{do shell script rsyncPath & rsyncParameter & SyncSource & " " & SyncDest with administrator privileges}
+			delay 1
+			set isDone to false
+			set itemPath to ("rsync ")
+			set itemProgress to "ps ax | grep -v grep | grep " & itemPath
+			repeat while isDone is false
+				try
+					do shell script itemProgress
+					if the result contains itemPath then
+						delay 1
+					else
+						set isDone to true
+					end if
+				on error
+					set isDone to true
+				end try
+			end repeat
+			if isDone is true then
+				do shell script (TerminalNotifier & " -title iCloudDrive鮦步鯇成鰳唷💋")
+				do shell script ("open " & SyncDest)
+				continue quit
+			end if
+		end tell
+	on error errmsg number errnbr
+		if errnbr = -128 then continue quit
+		continue quit
+	end try
+end script
 ------------------------ 開啟腳本 ------------------------ON. 
 script OpenScript
 	try
