@@ -2,12 +2,12 @@
 -- bit.ly/下載_鱫鰰iCloudDrive使用者鮦步 
 --排除={緩存,公用,桌面} 
 
-------------------------------∞ iCloudDriveUserSync ∞----------------------------------ON.  
+------------------------------∞ 鱫鰰iCloudDrive使用者鮦步 ∞----------------------------------ON.  
 global iCloudMode, iCloudRsyncMode, OpenScript, iCloud_To_User, rsyncPath, rsyncParameter, UserName, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
 global firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
-global iCloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, SyncSource, SyncDest, errmsg, errnbr
+global iCloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, UserName, SyncSource, SyncDest, errmsg, errnbr
 global iCloudRsyncMode, firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
-global CloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, SyncSource, SyncDest, RT_Option, RT_Option_HDW, errmsg, errnbr
+global CloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, UserName, SyncSource, SyncDest, RT_Option, RT_Option_HDW, errmsg, errnbr
 global iCloud_To_User, rsyncPath, rsyncParameter, UserName, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
 global OpenScript, OpenAppScript, TerminalNotifier, errmsg, errnbr
 
@@ -36,8 +36,8 @@ on run
 					set UserName to do shell script "whoami"
 					set UserName to quoted form of UserName
 					
-					set SyncSource to ("~")
-					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs")
+					set SyncSource to ("~/")
+					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName & "/")
 					
 					set TerminalNotifier to POSIX path of (path to me as text) ¬
 						& {"Contents/MacOS/terminal-notifier"}
@@ -190,7 +190,7 @@ script OpenScript
 		continue quit
 	end try
 end script
-------------------------------∞ iCloudDriveUserSync ∞---------------------------------END.
+------------------------------∞ 鱫鰰iCloudDrive使用者鮦步 ∞---------------------------------END.
 
 
 -- 
