@@ -36,8 +36,8 @@ on run
 					set UserName to do shell script "whoami"
 					set UserName to quoted form of UserName
 					
-					set SyncSource to ("~/")
-					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName & "/")
+					set SyncSource to ("~")
+					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs")
 					
 					set TerminalNotifier to POSIX path of (path to me as text) ¬
 						& {"Contents/MacOS/terminal-notifier"}
