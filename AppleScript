@@ -3,7 +3,7 @@
 --排除={緩存,公用,桌面} 
 
 ------------------------------∞ iCloudDriveUserSync ∞----------------------------------ON.  
-global iCloudMode, iCloudRsyncMode, OpenScript, iCloud_To_User, rsyncPath, rsyncParameter, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
+global iCloudMode, iCloudRsyncMode, OpenScript, iCloud_To_User, rsyncPath, rsyncParameter, UserName, SyncSource, SyncDest, TerminalNotifier, isDone, itemPath, itemProgress, errmsg, errnbr
 global firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
 global iCloudRsyncMode, firstRun, RT_Seconds, rsyncPath, rsyncParameter, SyncSource, SyncDest, errmsg, errnbr
 global iCloudRsyncMode, firstRun, RT_Seconds, RT_Option, RT_Option_HDW, errmsg, errnbr
@@ -33,12 +33,16 @@ on run
 					
 					set rsyncParameter to (" -ESWPaudvxh80AX --delete --stats --exclude={.*,Library,Public,Desktop} ")
 					
-					set SyncSource to ("~")
-					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs")
+					set UserName to do shell script "whoami"
+					set UserName to quoted form of UserName
+					
+					set SyncSource to ("~/")
+					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName & "/")
 					
 					set TerminalNotifier to POSIX path of (path to me as text) ¬
 						& {"Contents/MacOS/terminal-notifier"}
 					set TerminalNotifier to quoted form of TerminalNotifier
+					do shell script (TerminalNotifier & " -title iCloudDrive鮦步中唷💋")
 					
 					do shell script {rsyncPath & rsyncParameter & SyncSource & " " & SyncDest}
 					delay 1
@@ -133,14 +137,15 @@ script iCloud_To_User
 			set UserName to do shell script "whoami"
 			set UserName to quoted form of UserName
 			
-			set SyncSource to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName)
-			set SyncDest to ("~")
+			set SyncSource to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName & "/")
+			set SyncDest to ("~/")
 			
 			set TerminalNotifier to POSIX path of (path to me as text) ¬
 				& {"Contents/MacOS/terminal-notifier"}
 			set TerminalNotifier to quoted form of TerminalNotifier
+			do shell script (TerminalNotifier & " -title iCloudDrive鮦步中唷💋")
 			
-			{do shell script rsyncPath & rsyncParameter & SyncSource & " " & SyncDest with administrator privileges}
+			{do shell script rsyncPath & rsyncParameter & SyncSource & " " & SyncDest}
 			delay 1
 			set isDone to false
 			set itemPath to ("rsync ")
