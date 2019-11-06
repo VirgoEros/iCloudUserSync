@@ -1,4 +1,3 @@
-
 -- bit.ly/下載_鱫鰰iCloudDrive使用者鮦步 
 --排除={緩存,公用,桌面} 
 
@@ -30,6 +29,7 @@ on run
 					
 					set UserName to do shell script "whoami"
 					set UserName to quoted form of UserName
+					do shell script ("cd ~/Library/'Mobile Documents'/com~apple~CloudDocs ;mkdir -p " & UserName)
 					
 					set SyncSource to ("~/")
 					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName & "/")
@@ -70,9 +70,11 @@ on run
 					
 					set UserName to do shell script "whoami"
 					set UserName to quoted form of UserName
+					do shell script ("cd ~/Library/'Mobile Documents'/com~apple~CloudDocs ;mkdir -p " & UserName)
 					
 					set SyncSource to ("~/")
 					set SyncDest to ("~/Library/'Mobile Documents'/com~apple~CloudDocs/" & UserName & "/")
+					
 					set firstRun to true
 					set RT_Seconds to ("")
 					set {button returned:RT_Option} to ¬
@@ -149,4 +151,3 @@ end script
 
 
 -- 
-
